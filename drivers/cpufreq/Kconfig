@@ -140,6 +140,13 @@ config CPU_FREQ_GOV_PERFORMANCE
 
 	  If in doubt, say Y.
 
+config CPU_FREQ_GOV_ALTRIA_BY_G4NP
+        tristate "'altria_by_g4np' cpufreq governor"
+        depends on CPU_FREQ
+        select CPU_FREQ_GOV_COMMON
+        help
+          Enable if you want to add altria. If in doubt, left it as disabled
+
 config CPU_FREQ_GOV_POWERSAVE
 	tristate "'powersave' governor"
 	help

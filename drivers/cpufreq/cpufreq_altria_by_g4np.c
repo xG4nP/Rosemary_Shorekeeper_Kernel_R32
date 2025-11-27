@@ -1,7 +1,7 @@
 /*
  *  drivers/cpufreq/cpufreq_altria_by_g4np.c
  *
- *  Copyright (C) 2003 Patrick Ricafrente<patrick.ricafrente27@gmail.com>
+ *  Copyright (C)  2025 Patrick Ricafrente<patrick.ricafrente27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -27,6 +27,7 @@ struct cs_dbs_tuners {
 	unsigned int freq_step;
 };
 
+/* altria_by_g4np governor macros */
 #define DEF_FREQUENCY_UP_THRESHOLD		(86)
 #define DEF_FREQUENCY_DOWN_THRESHOLD		(24)
 #define DEF_FREQUENCY_STEP			(7)
@@ -37,7 +38,8 @@ static inline unsigned int get_freq_step(struct cs_dbs_tuners *cs_tuners,
 					 struct cpufreq_policy *policy)
 {
 	unsigned int freq_step = (cs_tuners->freq_step * policy->max) / 100;
-  
+
+
 	if (unlikely(freq_step == 0))
 		freq_step = DEF_FREQUENCY_STEP;
 
@@ -54,8 +56,10 @@ static unsigned int cs_dbs_update(struct cpufreq_policy *policy)
 	unsigned int load = dbs_update(policy);
 	unsigned int freq_step;
 
+
 	if (cs_tuners->freq_step == 0)
 		goto out;
+
 
 	if (requested_freq > policy->max || requested_freq < policy->min) {
 		requested_freq = policy->cur;
@@ -63,6 +67,7 @@ static unsigned int cs_dbs_update(struct cpufreq_policy *policy)
 	}
 
 	freq_step = get_freq_step(cs_tuners, policy);
+
 
 	if (policy_dbs->idle_periods < UINT_MAX) {
 		unsigned int freq_steps = policy_dbs->idle_periods * freq_step;
@@ -74,10 +79,12 @@ static unsigned int cs_dbs_update(struct cpufreq_policy *policy)
 
 		policy_dbs->idle_periods = UINT_MAX;
 	}
-  
+
+
 	if (load > dbs_data->up_threshold) {
 		dbs_info->down_skip = 0;
-    
+
+
 		if (requested_freq == policy->max)
 			goto out;
 
@@ -90,9 +97,11 @@ static unsigned int cs_dbs_update(struct cpufreq_policy *policy)
 		goto out;
 	}
 
+
 	if (++dbs_info->down_skip < dbs_data->sampling_down_factor)
 		goto out;
 	dbs_info->down_skip = 0;
+
 
 	if (load < cs_tuners->down_threshold) {
 
@@ -111,6 +120,7 @@ static unsigned int cs_dbs_update(struct cpufreq_policy *policy)
  out:
 	return dbs_data->sampling_rate;
 }
+
 
 static ssize_t store_sampling_down_factor(struct gov_attr_set *attr_set,
 					  const char *buf, size_t count)
@@ -152,6 +162,7 @@ static ssize_t store_down_threshold(struct gov_attr_set *attr_set,
 	int ret;
 	ret = sscanf(buf, "%u", &input);
 
+
 	if (ret != 1 || input < 1 || input > 100 ||
 			input >= dbs_data->up_threshold)
 		return -EINVAL;
@@ -178,7 +189,8 @@ static ssize_t store_ignore_nice_load(struct gov_attr_set *attr_set,
 		return count;
 
 	dbs_data->ignore_nice_load = input;
-  
+
+
 	gov_update_cpu_data(dbs_data);
 
 	return count;
@@ -198,6 +210,7 @@ static ssize_t store_freq_step(struct gov_attr_set *attr_set, const char *buf,
 
 	if (input > 100)
 		input = 100;
+
 
 	cs_tuners->freq_step = input;
 	return count;
@@ -227,6 +240,8 @@ static struct attribute *cs_attributes[] = {
 	NULL
 };
 
+
+
 static struct policy_dbs_info *cs_alloc(void)
 {
 	struct cs_policy_dbs_info *dbs_info;
@@ -252,7 +267,7 @@ static int cs_init(struct dbs_data *dbs_data)
 	tuners->freq_step = DEF_FREQUENCY_STEP;
 	dbs_data->up_threshold = DEF_FREQUENCY_UP_THRESHOLD;
 	dbs_data->sampling_down_factor = DEF_SAMPLING_DOWN_FACTOR;
-	dbs_data->ignore_nice_load = 1;
+	dbs_data->ignore_nice_load = 0;
 	dbs_data->tuners = tuners;
 
 	return 0;
@@ -285,7 +300,7 @@ static struct dbs_governor cs_governor = {
 #define CPU_FREQ_GOV_ALTRIA_BY_G4NP	(&cs_governor.gov)
 
 static int __init cpufreq_gov_dbs_init(void)
-
+{
 	return cpufreq_register_governor(CPU_FREQ_GOV_ALTRIA_BY_G4NP);
 }
 

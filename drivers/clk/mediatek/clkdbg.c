@@ -851,7 +851,7 @@ static int (struct seq_file *s, void *v)
 					"clk_prepare", s, v);
 }
 
-static int clkdbg_unprepare(struct seq_file *s, void *v)
+static int (struct seq_file *s, void *v)
 {
 	return clkdbg_clkop_void_ckname(clk_unprepare,
 					"clk_unprepare", s, v);

@@ -936,7 +936,7 @@ static int (struct seq_file *s, void *v)
 	return 0;
 }
 
-static int clkdbg_disable_unprepare_provider(struct seq_file *s, void *v)
+static int (struct seq_file *s, void *v)
 {
 	clkpvdop(disable_unprepare_provider, "disable_unprepare_provider", s);
 	return 0;

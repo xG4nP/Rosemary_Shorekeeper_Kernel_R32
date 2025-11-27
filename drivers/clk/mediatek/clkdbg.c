@@ -930,7 +930,7 @@ static void clkpvdop(void (*pvdop)(const char *), const char *clkpvdop_name,
 	seq_printf(s, "%s(%s)\n", clkpvdop_name, pvd_name);
 }
 
-static int clkdbg_prepare_enable_provider(struct seq_file *s, void *v)
+static int (struct seq_file *s, void *v)
 {
 	clkpvdop(prepare_enable_provider, "prepare_enable_provider", s);
 	return 0;

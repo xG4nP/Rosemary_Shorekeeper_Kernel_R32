@@ -991,7 +991,7 @@ static int (struct seq_file *s, void *v)
 	return r;
 }
 
-static int clkdbg_set_rate(struct seq_file *s, void *v)
+static int (struct seq_file *s, void *v)
 {
 	char cmd[sizeof(last_cmd)];
 	char *c = cmd;

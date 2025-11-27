@@ -942,7 +942,7 @@ static int (struct seq_file *s, void *v)
 	return 0;
 }
 
-static int clkdbg_set_parent(struct seq_file *s, void *v)
+static int (struct seq_file *s, void *v)
 {
 	char cmd[sizeof(last_cmd)];
 	char *c = cmd;

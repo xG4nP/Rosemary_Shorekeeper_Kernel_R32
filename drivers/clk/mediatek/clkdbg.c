@@ -406,7 +406,7 @@ static u32 read_spm_pwr_status(void)
 
 static s32 *read_spm_pwr_status_array(void)
 {
-	static void __iomem, *pwr_sta, *pwr_sta_2nd;
+	static void __iomem, *pwr_sta_2nd;
 	static int pwr_sta_val[STA_NUM];
 
 	if (clkdbg_ops == NULL || clkdbg_ops->get_spm_pwr_status_array  == NULL)

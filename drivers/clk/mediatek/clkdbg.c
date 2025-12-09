@@ -406,8 +406,8 @@ static u32 read_spm_pwr_status(void)
 
 static s32 *read_spm_pwr_status_array(void)
 {
-	static void __iomem;
-	static int [STA_NUM];
+	static void __iomem *scpsys_base, *pwr_sta, *pwr_sta_2nd;
+	static int pwr_sta_val[STA_NUM];
 
 	if (clkdbg_ops == NULL || clkdbg_ops->get_spm_pwr_status_array  == NULL)
 		return  ERR_PTR(-EINVAL);
@@ -845,37 +845,37 @@ static int clkdbg_clkop_void_ckname(void (*clkop)(struct clk *clk),
 	return 0;
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_prepare(struct seq_file *s, void *v)
 {
 	return clkdbg_clkop_int_ckname(clk_prepare,
 					"clk_prepare", s, v);
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_unprepare(struct seq_file *s, void *v)
 {
 	return clkdbg_clkop_void_ckname(clk_unprepare,
 					"clk_unprepare", s, v);
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_enable(struct seq_file *s, void *v)
 {
 	return clkdbg_clkop_int_ckname(clk_enable,
 					"clk_enable", s, v);
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_disable(struct seq_file *s, void *v)
 {
 	return clkdbg_clkop_void_ckname(clk_disable,
 					"clk_disable", s, v);
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_prepare_enable(struct seq_file *s, void *v)
 {
 	return clkdbg_clkop_int_ckname(clk_prepare_enable,
 					"clk_prepare_enable", s, v);
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_disable_unprepare(struct seq_file *s, void *v)
 {
 	return clkdbg_clkop_void_ckname(clk_disable_unprepare,
 					"clk_disable_unprepare", s, v);
@@ -930,19 +930,19 @@ static void clkpvdop(void (*pvdop)(const char *), const char *clkpvdop_name,
 	seq_printf(s, "%s(%s)\n", clkpvdop_name, pvd_name);
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_prepare_enable_provider(struct seq_file *s, void *v)
 {
 	clkpvdop(prepare_enable_provider, "prepare_enable_provider", s);
 	return 0;
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_disable_unprepare_provider(struct seq_file *s, void *v)
 {
 	clkpvdop(disable_unprepare_provider, "disable_unprepare_provider", s);
 	return 0;
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_set_parent(struct seq_file *s, void *v)
 {
 	char cmd[sizeof(last_cmd)];
 	char *c = cmd;
@@ -991,7 +991,7 @@ static int (struct seq_file *s, void *v)
 	return r;
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_set_rate(struct seq_file *s, void *v)
 {
 	char cmd[sizeof(last_cmd)];
 	char *c = cmd;
@@ -1110,7 +1110,7 @@ static int parse_reg_val_from_cmd(void __iomem **preg, unsigned long *pval)
 	return r;
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_reg_read(struct seq_file *s, void *v)
 {
 	void __iomem *reg;
 	unsigned long val = 0;
@@ -1126,7 +1126,7 @@ static int (struct seq_file *s, void *v)
 	return 0;
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_reg_write(struct seq_file *s, void *v)
 {
 	void __iomem *reg;
 	unsigned long val = 0;
@@ -1143,7 +1143,7 @@ static int (struct seq_file *s, void *v)
 	return 0;
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_reg_set(struct seq_file *s, void *v)
 {
 	void __iomem *reg;
 	unsigned long val = 0;
@@ -1160,7 +1160,7 @@ static int (struct seq_file *s, void *v)
 	return 0;
 }
 
-static int (struct seq_file *s, void *v)
+static int clkdbg_reg_clr(struct seq_file *s, void *v)
 {
 	void __iomem *reg;
 	unsigned long val = 0;

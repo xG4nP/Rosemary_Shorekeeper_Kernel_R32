@@ -7,6 +7,7 @@ snd-soc-mt6785-afe-objs := \
 	mt6785-afe-gpio.o \
 	mt6785-dai-adda.o \
 	mt6785-afe-control.o \
+    mt6785-avi.o \
 	mt6785-dai-i2s.o \
 	mt6785-dai-hw-gain.o \
 	mt6785-dai-src.o \

@@ -23,3 +23,4 @@ ccflags-y += -I$(srctree)/drivers/misc/mediatek/adsp/$(CONFIG_MTK_PLATFORM)
 endif
 
 obj-y += audio_ipi_platform.o
+obj-y += avi.o

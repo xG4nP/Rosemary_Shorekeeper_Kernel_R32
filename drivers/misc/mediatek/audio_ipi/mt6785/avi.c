@@ -1,4 +1,3 @@
-// File: drivers/misc/mediatek/audio/voice_interceptor.c
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/kthread.h>

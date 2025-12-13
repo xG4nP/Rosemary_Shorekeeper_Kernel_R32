@@ -2724,11 +2724,19 @@ page_owner=on loop.max_part=16";
 		#phy-cells = <1>;
 	};
 
-	audio: audio@11210000 {
+    audio: audio@11210000 {
 		compatible = "mediatek,audio", "syscon";
 		reg = <0 0x11210000 0 0x1000>;
 		#clock-cells = <1>;
 	};
+
+    avi {
+    compatible = "mediatek,avi";
+    status = "okay";
+    monitor-property = "vendor.audio.voice.receiver.status";
+    kill-process = "audioserver";
+    delay-ms = <3000>;
+    };
 
 	afe: mt6785-afe-pcm@11210000 {
 		compatible = "mediatek,mt6785-sound";

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-2.0
+config SND_SOC_MT6785
+	tristate "ASoC support for MT6785"
+	depends on SND_SOC_MEDIATEK
+	help
+	  This adds ASoC platform driver for MediaTek MT6785.
+	  Select Y to enable audio support for MT6785.
+
+config SND_SOC_MT6785_AVI
+	tristate "MT6785 Audio Voice Interceptor"
+	depends on SND_SOC_MT6785
+	default n
+	help
+	  AVI - Audio Voice Interceptor for MT6785.
+	  Monitors voice receiver status and fixes audio issues.
+EOF

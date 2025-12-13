@@ -17,6 +17,7 @@ snd-soc-mt6785-afe-objs := \
 	mt6785-misc-control.o
 
 obj-$(CONFIG_SND_SOC_MT6785) += snd-soc-mt6785-afe.o
+obj-$(CONFIG_SND_SOC_MT6785) += mt6785-avi.o
 
 # machine driver
 obj-$(CONFIG_SND_SOC_MT6785_MT6359) += mt6785-mt6359.o
